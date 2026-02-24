@@ -10,6 +10,7 @@
         <script src="jspsych/dist/plugin-survey-text.js"></script>
         <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
         <script src="jspsych/dist/plugin-survey-likert.js"></script>
+        <script src="jspsych/dist/plugin-preload.js"></script>
     </head>
     <body>
         <script>
@@ -17,6 +18,22 @@
             const jsPsych = initJsPsych();
 
             const timeline = [];
+
+            // Pre-loading images 
+            const prelaod = {
+                type: jsPsychPreload,
+                images: [
+                    "Images/Item1/Item1Control.png",
+                    "Images/Item1/Item1Factive.png",
+                    "Images/Item1/Item1NonFactive.png",
+                    "Images/Item2/Item2Control.png",
+                    "Images/Item2/Item2Factive.png",
+                    "Images/Item2/Item2NonFactive.png",
+                    "Images/Item3/Item3Control.png",
+                    "Images/Item3/Item3Factive.png",
+                    "Images/Item3/Item3NonFactive.png"
+                ]
+            };
 
             // Welcome message
             const welcome = {
@@ -29,79 +46,94 @@
             timeline.push(welcome);
 
             // Pool of stimuli
-            const  stimuli_control = [
-                { 
-                    news: "RDC : Le groupe armé M23 entrave l’accès aux zones qu’ils contrôlent",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que le M23 entrave l’accès aux zones qu’ils contrôlent ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
-                    detail: "detail RDC",
-                    questionvalence: "Savoir que le groupe armé M23 entrave l'accès aux zones qu'ils contrôlent vous provoque un sentiment:"
-                }, 
+            const stimuli = [
                 {
-                    news: "Guerre en Ukraine: La Russie bloque l’aide aux sinistrés du barrage de Kakhovka",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
-                    detail: "detail Ukraine",
-                    questionvalence: "Savoir que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka vous provoque un sentiment:"
+                id: 1,
+                 variants: {
+                    control: {
+                        news: "Images/Item1/Item1Control.png",
+                        questionvalence: "Savoir que le groupe armé M23 entrave l'accès aux zones qu'ils contrôlent vous provoque un sentiment:"
+                    },
+                    factive: {
+                        news: "Images/Item1/Item1Factive.png",
+                        questionvalence: "Savoir que l'ONU déplore que le groupe armé M23 entrave l'accès aux zones qu'ils contrôlent vous provoque un sentiment:"
+                    },
+                    non_factive: {
+                        news: "Images/Item1/Item1NonFactive.png",
+                        questionvalence: "Savoir que l'ONU accuse le groupe armé M23 d'entraver l'accès aux zones qu'ils contrôlent vous provoque un sentiment:"
+                    }
+                 },
+                 question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que le M23 entrave l’accès aux zones qu’ils contrôlent ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
+                 detail: "detail RDC" 
                 },
-                {
-                    news: "Libye: Négociations autour d’un cessez-le-feu durable",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait qu'il y a des négociations autour d'un 'cessez-le-feu durable' ?",
-                    detail: "detail Libye",
-                    questionvalence: "Savoir qu'il y a des négociations autour d'un cessez-le-feu durabe vous provoque un sentiment:"
-                },
-            ];
 
-            const stimuli_factive = [
-                { 
-                    news: "RDC: l’ONU déplore que le groupe armé M23 entrave l’accès aux zones qu’ils contrôlent",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que le M23 entrave l’accès aux zones qu’ils contrôlent ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
-                    detail: "detail RDC",
-                    questionvalence: "Savoir que l'ONU déplore que le groupe armé M23 entrave l'accès aux zones qu'ils contrôlent vous provoque un sentiment:"
-                }, 
                 {
-                    news: "Guerre en Ukraine: l’ONU déplore que la Russie bloque l’aide aux sinistrés du barrage de Kakhovka",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
-                    detail: "detail Ukraine",
-                    questionvalence: "Savoir que l'ONU déplore que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka vous provoque un sentiment:"
+                id: 2,
+                 variants: {
+                    control: {
+                        news: "Images/Item2/Item2Control.png",
+                        questionvalence: "Savoir que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka vous provoque un sentiment:"
+                    },
+                    factive: {
+                        news: "Images/Item2/Item2Factive.png",
+                        questionvalence: "Savoir que l'ONU déplore que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka vous provoque un sentiment:"
+                    },
+                    non_factive: {
+                        news: "Images/Item2/Item2NonFactive.png",
+                        questionvalence: "Savoir que l'ONU accuse la Russie de bloquer l'aide aux sinistrés du barrage de Kakhovka vous provoque un sentiment:"
+                    }
+                 },
+                 question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
+                 detail: "detail Ukraine" 
                 },
+
                 {
-                    news: "Libye: l’ONU prend en compte les négociations autour d’un 'cessez-le-feu durable'",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait qu'il y a des négociations autour d'un 'cessez-le-feu durable' ?",
-                    detail: "detail Libye",
-                    questionvalence: "Savoir que l'ONU prend en compte les négociations autour d'un 'cessez-le-feu' durabe vous provoque un sentiment:"
-                },
+                id: 3,
+                 variants: {
+                    control: {
+                        news: "Images/Item3/Item3Control.png",
+                        questionvalence: "Savoir qu'il y a des négociations autour d'un cessez-le-feu durable vous provoque un sentiment:"
+                    },
+                    factive: {
+                        news: "Images/Item3/Item3Factive.png",
+                        questionvalence: "Savoir que l'ONU prend en compte les négociations autour d'un 'cessez-le-feu' durable vous provoque un sentiment:"
+                    },
+                    non_factive: {
+                        news: "Images/Item3/Item3NonFactive.png",
+                        questionvalence: "Savoir que l'ONU affirme qu'il y a des négociations autour d'un 'cessez-le-feu durable' vous provoque un sentiment:"
+                    }
+                 },
+                 question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait qu'il y a des négociations autour d'un 'cessez-le-feu durable' ?",
+                 detail: "detail Libye" 
+                }
             ];
-            
-            const stimuli_non_factive = [
-                { 
-                    news: "RDC: l’ONU accuse le groupe armé M23 d’entraver l’accès aux zones qu’ils contrôlent",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que le M23 entrave l’accès aux zones qu’ils contrôlent ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
-                    detail: "detail RDC",
-                    questionvalence: "Savoir que l'ONU accuse le groupe armé M23 d'entraver l'accès aux zones qu'ils contrôlent vous provoque un sentiment:"
-                },
-                {
-                    news: "Guerre en Ukraine: l’ONU accuse la Russie de bloquer l’aide aux sinistrés du barrage de Kakhovka",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que la Russie bloque l'aide aux sinistrés du barrage de Kakhovka ? (0% étant purement une question d'opinion et 100% purement une question de fait)",
-                    detail: "detail Ukraine",
-                    questionvalence: "Savoir que l'ONU accuse la Russie de bloquer l'aide aux sinistrés du barrage de Kakhovka vous provoque un sentiment:"
-                },
-                {
-                    news: "Libye: l’ONU affirme qu’il y a des négociations autour d’un 'cessez-le-feu durable'",
-                    question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait qu'il y a des négociations autour d'un 'cessez-le-feu durable' ?",
-                    detail: "detail Libye",
-                    questionvalence: "Savoir que l'ONU affirme qu'il y a des négociations autour d'un 'cessez-le-feu durabe' vous provoque un sentiment:"
-                },
-            ]
 
             // Initializing money pool
             let Money = 2;
             
             // Randomizing control and treatments 
-            const condition = jsPsych.randomization.sampleWithoutReplacement([
-                stimuli_control,
-                stimuli_factive,
-                stimuli_non_factive
-            ], 1)[0];
+            let condition = [];
 
+            stimuli.forEach(item => {
+
+                // To randomly choose a condition among control/factive/non-factive
+                const variants = ["control", "factive", "non_factive"];
+                const chosen_variant = jsPsych.randomization.sampleWithoutReplacement(variants, 1)[0];
+
+                // Adding the final item
+                condition.push({
+                    item_id: item.id,
+                    news: item.variants[chosen_variant].news,
+                    questionvalence: item.variants[chosen_variant].questionvalence,
+                    question: item.question,
+                    detail: item.detail,
+                    version: chosen_variant
+                });
+            });
+
+            // Rndomizing final order of items
+            condition = jsPsych.randomization.shuffle(condition);
+            
             // Demographics stimulis
             const demographics = {
                 timeline: [
@@ -147,117 +179,57 @@
             };
             timeline.push(demographics);
 
-            // Exposure to international conflicts control measure
-            const exposure = {
-                type: jsPsychSurveyLikert,
-                preamble: "<p> Pour chacun des 9 conflits internationaux ci-dessous, indiquez à quel point vous sentez-vous <b>exposé(e) à des informations</b> sur le sujet:</p>",
-                questions: [
+            // Quizz of knowledge on international conflicts
+
+            // 1.Pool of questions
+            const knowledge_quizz = [
+                {
+                    id: 1,
+                    questionQuizz: "Israël/Palestine: Comment appelle-t-on les accords signés dans les années 1990 censés poser les bases d'une solution à deux États et d'une autonomie palestinienne ?",
+                    options: [
+                        "A) Les accords de Camp David",
+                        "B) Les accords d'Oslo",
+                        "C) Les accords d'Abraham",
+                        "D) Les accords de Genève",
+                        "Je ne sais pas"
+                    ],
+                    correct: 1
+                },
+                {
+                    id: 2,
+                    questionQuizz: "Israël/Palestine: Quel est le nom de l'agence des Nations Unies spécifiquement dédiée à l'aide aux réfugiés palestiniens ?",
+                    options: [
+                        "Le HCR (UNHCR)",
+                        "Le UNPRH",
+                        "L'UNWRA",
+                        "L'UNICEF",
+                        "Je ne sais pas"
+                    ],
+                    correct: 2
+                },
+            ];
+
+            // Operationalizing the Quizz
+            const quizz_timeline = {
+                timeline: [
                     {
-                        prompt: "RDC",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Ukraine",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Libye",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Yémen",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Soudan",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Palestine",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Afghanistan",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Corée",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Syrie",
-                        labels: ["Pas du tout exposé(e)", "Pas exposé(e)", "Pas trop exposé(e)", "Moyennement exposé(e)", "Un peu exposé(e)", "Exposé(e)", "Très exposé(e)"],
-                        required: true
+                        type: jsPsychSurveyMultiChoice,
+                        questions: function(){
+                            const q = jsPsych.timelineVariable('questionQuizz');
+                            const opts = jsPsych.timelineVariable('options');
+                            return [{
+                                prompt: q,
+                                options: opts,
+                                required: true
+                            }];
+                        },
+                        button_label: "Valider"
                     }
                 ],
-                randomize_question_order: true,
-                button_label: "Confirmer vos réponses"
+                timeline_variables: knowledge_quizz,
+                randomize_order: true
             };
-            timeline.push(exposure);
-            
-            // Knowledge of international conflicts control measure
-            const knowledge = {
-                type: jsPsychSurveyLikert,
-                preamble: "<p> Pour chacun des 9 conflits internationaux ci-dessous, indiquez à quel point vous sentez-vous <b>informé(e)</b> sur le sujet:</p>",
-                questions: [
-                    {
-                        prompt: "RDC",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Ukraine",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Libye",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Yémen",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Soudan",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Palestine",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Afghanistan",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Corée",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    },
-                    {
-                        prompt: "Syrie",
-                        labels: ["Pas du tout informé(e)", "Pas informé(e)", "Pas trop informé(e)", "Ni informé(e) ni pas informé(e)", "Un peu informé(e)", "informé(e)", "Très informé(e)"],
-                        required: true
-                    }
-                ],
-                randomize_question_order: true,
-                button_label: "Confirmer vos réponses"
-            };
-            timeline.push(knowledge);
+            timeline.push(quizz_timeline)
 
             // Timeline per news stimulus
             const stimulus_timeline = {
@@ -267,14 +239,16 @@
                     {
                         type: jsPsychHtmlSliderResponse,
                         stimulus: function() {
-                            let title = jsPsych.timelineVariable('news');
+                            let img = jsPsych.timelineVariable('news');
                             let question = jsPsych.timelineVariable('question');
                             return `
-                                <h2>${title}</h2>
-                                <div style="margin: 30px 0;">
-                                    <p style="font-style: italic;">${question}</p>
-                                    <p>Votre réponse : <b id="valeur-slider">50%</b> / 100%</p>
-                                    <p>💰 Pièces restantes : <b>${Money}</b></p>
+                                <div style="text-align:center;">
+                                        <img src="${img}" style="max-width:800px;">
+                                        <div style="margin: 30px 0;">
+                                            <p style="font-style: italic;">${question}</p>
+                                            <p>Votre réponse : <b id="valeur-slider">50%</b> / 100%</p>
+                                            <p>💰 Pièces restantes : <b>${Money}</b></p>
+                                        </div>
                                     </div>`;
                         },  
                         labels: ['0', '20', '40', '60', '80', '100'],
@@ -299,14 +273,16 @@
                     {
                         type: jsPsychHtmlSliderResponse,
                         stimulus: function (){
-                            let title = jsPsych.timelineVariable('news');
+                            let img = jsPsych.timelineVariable('news');
                             let questionvalence = jsPsych.timelineVariable('questionvalence');
                             return `
-                                <h2>${title}</h2>
-                                <div style="margin: 30px 0;">
-                                    <p style="font-style: italic;">${questionvalence}</p>
-                                    <p>💰 Pièces restantes : <b>${Money}</b></p>
-                                    </div>`;
+                                <div style="text-align:center;">
+                                        <img src="${img}" style="max-width:800px;">
+                                        <div style="margin: 30px 0;">
+                                            <p style="font-style: italic;">${questionvalence}</p>
+                                            <p>💰 Pièces restantes : <b>${Money}</b></p>
+                                            </div>
+                                        </div>`;
                         },
                         labels: ['Très négatif', 'Négatif', 'Un peu négatif', 'Neutre', 'Un peu positif', 'Positif', 'Très positif'],
                         min: 1,
