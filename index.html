@@ -31,7 +31,10 @@
                     "Images/Item2/Item2NonFactive.png",
                     "Images/Item3/Item3Control.png",
                     "Images/Item3/Item3Factive.png",
-                    "Images/Item3/Item3NonFactive.png"
+                    "Images/Item3/Item3NonFactive.png",
+                    "Images/Item4/Item4Control.png",
+                    "Images/Item4/Item4Factive.png",
+                    "Images/Item4/Item4NonFactive.png"
                 ]
             };
 
@@ -39,7 +42,28 @@
             const welcome = {
                 type: jsPsychHtmlButtonResponse,
                 stimulus:`
-                <h1> Introduction </h1>
+                <div style="text-align:center; max-width:700px; margin:auto;">
+                    <h1>Bienvenue !</h1>
+                    <p>
+                        Merci à vous de participer à cette étude ! Cette expérience est conduite par Leprince-Chonik Damien dans le cadre de sa thèse de M1 pour le Master Economie et Psychologie de l'Ecole d'économie de Paris, réalisée sous la supervision de Bastien Blain (Panthéon-Sorbonne).
+                    </p>
+                    <p>
+                        <b>Objectif:</b> mieux comprendre l'impact des médias sur la perception des conflits internationaux. Il n'y a aucun piège dans cette étude, répondez sincèrement.
+                    </p>
+                        <b>Déroulement de l'expérience (~15 min):</b>
+                        <ul style="text-align:left; display:inline-block;">
+                            <li>1er temps : questions démographiques (~1 min)</li>
+                            <li>2nd temps : quiz de 18 questions sur les conflits internationaux (~5 min)</li>
+                            <li>3ème temps : évaluation de l'objectivité perçue et du ressenti de 16 titres de presse (~8 min)</li>
+                        </ul>
+                        <p>
+                        Votre participation est volontaire et anonyme. Aucun risque de danger n'est associé à cette expérience. <br>
+                        Vous pouvez me contacter à cette adresse mail: damien.leprincepro@gmail.com en cas de besoin. 
+                    </p>
+                    <p>
+                        En cliquant sur la flèche ci-dessous, vous acceptez de participer à cette expérience.
+                    </p>
+                </div>
                 `,
                 choices: ['<span style="font-size: 40px;">➔</span>'],
             };
@@ -105,6 +129,26 @@
                  },
                  question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait qu'il y a des négociations autour d'un 'cessez-le-feu durable' ?",
                  detail: "detail Libye" 
+                },
+
+                {
+                id: 4,
+                 variants: {
+                    control: {
+                        news: "Images/Item4/Item4Control.png",
+                        questionvalence: "Savoir que les groupes armés provoquent une détérioration de la situation à Béni vous provoque un sentiment:"
+                    },
+                    factive: {
+                        news: "Images/Item4/Item4Factive.png",
+                        questionvalence: "Savoir que l’ONU déplore que les groupes armés provoquent une détérioration de la situation à Béni vous provoque un sentiment:"
+                    },
+                    non_factive: {
+                        news: "Images/Item4/Item4NonFactive.png",
+                        questionvalence: "Savoir que l'ONU accuse les groupes armés de provoquer une détérioration de la situation à Béni vous provoque un sentiment:"
+                    }
+                 },
+                 question: "À combien de % pensez-vous qu'il existe une vérité objective sur le fait que les groupes armés provoquent une détérioration de la situation à Béni ?",
+                 detail: "detail RDC 2" 
                 }
             ];
 
@@ -141,6 +185,7 @@
                     // 1. Gender
                     {
                         type: jsPsychSurveyMultiChoice,
+                        data: {question: "gender"},
                         questions: [
                             { 
                                 prompt: "Quel est votre genre ?",
@@ -153,6 +198,7 @@
                     // 2. Age
                     {
                         type: jsPsychSurveyText,
+                        data: {question: "age"},
                         questions: [
                             {
                                 prompt: "Quel est votre âge ? (Répondez en nombre, par exemple: 21)",
@@ -165,6 +211,7 @@
                     // 3. Political orientation
                     {
                         type: jsPsychSurveyLikert,
+                        data: {question: "political_orientation"},
                         preamble: "<p> Sur le <b>spectre politique</b>, êtes-vous plutôt:",
                         questions: [
                     {
@@ -178,6 +225,27 @@
                 ]
             };
             timeline.push(demographics);
+
+            // Quizz message
+            const quizz_welcome = {
+                type: jsPsychHtmlButtonResponse,
+                stimulus:`
+                <div style="text-align:center; max-width:700px; margin:auto;">
+                    <h1>Quizz sur les conflits internationaux (~5 min)</h1>
+                    <p>
+                        Vous allez répondre à une série de 18 questions sur les conflits internationaux. Il n'y a pas de piège et certaines questions sont dures. N'hésitez pas à répondre que vous ne savez pas, l'objectif étant simplement de savoir quelle est votre niveau d'information sur les différents conflits. 
+                    </p>
+                    <p>
+                        <b>Important:</b> il n'y a qu'une seule bonne réponse par question. Pour la validité de l'étude, merci de n'utiliser aucune ressource extérieure pour répondre. 
+                    </p>
+                    <p>
+                        Veuillez cliquer sur la flèche ci-dessous pour commencer. 
+                    </p>
+                </div>
+                `,
+                choices: ['<span style="font-size: 40px;">➔</span>'],
+            };
+            timeline.push(quizz_welcome);
 
             // Quizz of knowledge on international conflicts
 
@@ -199,13 +267,37 @@
                     id: 2,
                     questionQuizz: "Israël/Palestine: Quel est le nom de l'agence des Nations Unies spécifiquement dédiée à l'aide aux réfugiés palestiniens ?",
                     options: [
-                        "Le HCR (UNHCR)",
-                        "Le UNPRH",
-                        "L'UNWRA",
-                        "L'UNICEF",
+                        "A) Le HCR (UNHCR)",
+                        "B) Le UNPRH",
+                        "C) L'UNWRA",
+                        "D) L'UNICEF",
                         "Je ne sais pas"
                     ],
                     correct: 2
+                },
+                {
+                    id: 3,
+                    questionQuizz: "Russie/Ukraine: Parmi les régions suivantes, laquelle n’a pas été revendiquée ou annexée par la Russie:",
+                    options: [
+                        "A) Crimée",
+                        "B) Donetsk",
+                        "C) Louhansk",
+                        "D) Lviv",
+                        "Je ne sais pas"
+                    ],
+                    correct: 3
+                },
+                {
+                    id: 4,
+                    questionQuizz: "Russie/Ukraine: En quelle année la Russie a lancé l’invasion à grande échelle de l’Ukraine ?",
+                    options: [
+                        "A) 2020",
+                        "B) 2021",
+                        "C) 2022",
+                        "D) 2023",
+                        "Je ne sais pas"
+                    ],
+                    correct: 3
                 },
             ];
 
@@ -223,7 +315,13 @@
                                 required: true
                             }];
                         },
-                        button_label: "Valider"
+                        button_label: "Valider",
+                        data: function(){
+                            const id = jsPsych.timelineVariable('id', true);
+                            return{
+                                question: `quizz[${id}]`
+                            };
+                        }
                     }
                 ],
                 timeline_variables: knowledge_quizz,
@@ -266,6 +364,10 @@
                             slider.addEventListener('input', function() {
                                 affichage.innerHTML = slider.value + "%";
                             });
+                        },
+                        data: function(){
+                            const id = jsPsych.timelineVariable('item_id', true);
+                            return { question: `news[${id}]_evaluation` };
                         }
                     },
 
@@ -292,6 +394,10 @@
                         prompt: "<p> Glissez le curseur pour répondre</p>",
                         button_label: "Confirmer l'évaluation",
                         require_movement: true,
+                        data: function(){
+                            const id = jsPsych.timelineVariable('item_id', true);
+                            return { question: `news[${id}]_valence` };
+                        }
                     },
 
                     // 3. Does participant want to spend credit to get extra information ? 
@@ -310,11 +416,18 @@
                         },
                         on_finish: function(data){
                             if(Money > 0){
-                                data.wants_info = data.response === 0; 
-                                if(data.wants_info) Money -= 1;
+                                data.wants_info = data.response === 0 ? "Oui" : "Non";
                             } else {
-                                data.wants_info = false;
+                                data.wants_info = "CANT";
                             }
+                            if(data.wants_info === "Oui") Money -= 1;
+                        },
+                        data: function (){
+                            const id = jsPsych.timelineVariable('item_id', true);
+                            return {
+                                question: `news[${id}]_add`,
+                                money_pool: Money
+                            };
                         }
                     },
 
@@ -330,7 +443,7 @@
                         }],
                         conditional_function: function(){
                             const last_trial = jsPsych.data.get().last(1).values()[0];
-                            return last_trial.wants_info;
+                            return last_trial.wants_info === "Oui";
                         }
                     }
 
@@ -339,9 +452,27 @@
                 randomize_order: true
             };
             timeline.push(stimulus_timeline)
-      
+            
+
+            // End message
+            const end_message = {
+                type: jsPsychHtmlButtonResponse,
+                stimulus: `
+                    <div style="text-align:center; max-width:700px; margin:auto; margin-top:100px;">
+                        <h2>Merci pour votre participation !</h2>
+                        <p>L'expérience est maintenant terminée.</p>
+                        <p>Cliquez sur terminer pour valider vos réponses, puis fermez cette page.</p>
+                    </div>
+                `,
+                choices: ["Terminer"]
+            };
+            timeline.push(end_message);
+
             // Launch of the experiment
-            jsPsych.run(timeline);
+            jsPsych.run(timeline).then(function(){
+                jsPsych.data.get().localSave('csv','mes_donnees_experience.csv');
+            });
         </script>
     </body>
 </html> 
+
