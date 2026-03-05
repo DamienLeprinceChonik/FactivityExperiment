@@ -329,6 +329,33 @@
             };
             timeline.push(quizz_timeline)
 
+            // News message
+            const news_welcome = {
+                type: jsPsychHtmlButtonResponse,
+                stimulus:`
+                <div style="text-align:center; max-width:700px; margin:auto;">
+                    <h1>Évaluation de titre de presse (~8 min)</h1>
+                    <p>
+                        Vous allez évaluer l'objectivité perçue de 16 titres de presse.  
+                    </p>
+                    <b>Pour chaque titre, vous aurez 3 étapes:</b>
+                        <ul style="text-align:left; display:inline-block;">
+                            <li>1er étape : vous évaluez à combien de % l'information d'un titre de presse vous paraît être plutôt une question de fait (100%) ou d'opinion (0%)</li>
+                            <li>2nd temps : vous évaluez si l'information vous procure un sentiment plutôt négatif ou positif</li>
+                            <li>3ème temps : vous avez la possibilité de dépenser 1 pièce pour avoir un complément d'informations sur le titre de presse que vous avez eu.</li>
+                        </ul>
+                    <p>
+                        <b>Important:</b> vous disposez de <b>8 pièces</b> pour 16 titres. Sans pièce, vous ne pouvez pas consulter d'information supplémentaire. Vous n'êtes pas obligé de dépenser toutes vos pièces. Il n'y a pas de bonne ou mauvaise stratégie pour l'utilisation des pièces, utilisez-les pour avoir davantage d'informations sur les titres qui vous intéressent. Par soucis d'objectivité, les informations supplémentaires sont fournit par le modèle Gemini 3.1 Pro. 
+                    </p>
+                    <p>
+                        Veuillez cliquer sur la flèche ci-dessous pour commencer. 
+                    </p>
+                </div>
+                `,
+                choices: ['<span style="font-size: 40px;">➔</span>'],
+            };
+            timeline.push(news_welcome);
+
             // Timeline per news stimulus
             const stimulus_timeline = {
                 timeline: [
@@ -434,13 +461,41 @@
                     // 4. Printing news (if answer is yes)
                     {
                         timeline: [{
-                            type: jsPsychHtmlButtonResponse,
+                            type: jsPsychHtmlSliderResponse,
                             stimulus: function(){
                                 let detail = jsPsych.timelineVariable('detail');
-                                return `<p>Détails supplémentaires : ${detail}</p>`;
+                                return `
+                                <div style="text-align:center; max-width:700px; margin:auto;">
+                                    <p><b>Détails supplémentaires :</b></p>
+                                    <p>${detail}</p>
+
+                                    <div style="margin-top:40px;">
+                                        <p><i>A quel point ce complément d'information vous a-t-il permis de mieux comprendre le titre de presse ?</i></p>
+                                    </div>
+                                </div>
+                                    `;
                             },
-                            choices: ["Continuer"]
+                            labels: [
+                                "Pas du tout",
+                                "Très peu",
+                                "Un peu",
+                                "Modérément",
+                                "Plutôt",
+                                "Beaucoup",
+                                "Énormément"
+                            ],
+                            min: 1,
+                            max: 7,
+                            slider_start: 4,
+                            step: 1,
+                            require_movement: true,
+                            button_label: "Confirmer",
+                            data: function(){
+                                const id = jsPsych.timelineVariable('item_id', true);
+                                return { question: `news[${id}]_detail_usefulness` };
+                            }
                         }],
+                        
                         conditional_function: function(){
                             const last_trial = jsPsych.data.get().last(1).values()[0];
                             return last_trial.wants_info === "Oui";
@@ -475,4 +530,3 @@
         </script>
     </body>
 </html> 
-
